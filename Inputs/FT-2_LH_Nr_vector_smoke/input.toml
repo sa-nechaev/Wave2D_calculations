@@ -1,0 +1,194 @@
+[work]
+name = 'FT-2_LH_Nr_smoke' # name of calculation
+description = 'FT-2 LH fast smoke test: single task, Nr=51, Mmax=16, nphi=-122, freq=0.92 GHz, field_solver_ver=2. Quick end-to-end check of build/run/results pipeline.'
+
+[series]
+number = 1
+section = 'w2grid'
+var = 'Nr'
+start = 51
+step = 10
+
+[solver]
+field_solver_ver = 2 # 0 old, 1 MKL+OMP, 2 (MKL+OMP+no_inv_mat)
+
+[w2grid]
+# comments
+Nr = 51	  # number of radial points
+nphi1 = -122	  # integer start toroidal wavenumber (Ntor1 = nphi1/R)
+nphi2 = -122	  # integer final toroidal wavenumber (Ntor2 = nphi2/R)
+nphistep = 1      # integer step for toroidal mode number
+Mmax = 16        # maximum poloidal mode number
+Mspow_excess = 1  # Mspow_excess (non-negative): Msmax = Msmax_min_permissible * 2**Mspow_excess
+Pinterv = 0  # number of traced time intervals
+
+[w2source]
+# comments
+AntType = 1	    # 0-Sngl.Mode, 1-Grill, 2-Strap, 3-Spher.Front, 4-Gaus.Beam, 5-File, 6-BasicSet, 7-Imped
+Pinp = 200.0	# Pinp(kW)
+
+[w2strap]
+faraday_screen  = false  # logical - if Faraday screen is present
+strap_distance  = 2.0    # strap distance from the wall (cm)
+screen_distance = 3.0    # screen distance from the wall (cm)
+strap_angle = 0.0        # strap inclination angle to the poloidal direction (degrees)
+poloidal_position = 0.0  # strap center poloidal position (theta, degrees)
+poloidal_height = 60.0   # strap poloidal height (theta, degrees)
+strap_current = 1.0      # strap current
+
+
+[plasma]
+R0  = 55.0	    # R0(cm) - major radius (R0=0 for cylinder geometry)
+a0  = 8.0	    # a0(cm) - minor radius
+SOL = 0.0	    # SOL(cm) - SOL width; a0-sol = al
+Delx = 0.5	    # Delx(cm) - Shafranov shift at the axis
+lamw = 1.0	    # lamw - ellipt-ty of the last flux surface (lamw>=1)
+gamw = 0.0	    # gamw - triang-ty of the last flux surface (0<=gamw<=1)
+freq = 0.92	    # frequency (GHz)
+number_of_ion_species = 1	# integer number of ion species
+list_of_ions =[ 1, 1]	    # integer ion mass, ion charge
+
+[w2front]
+Xf = 2.63	                    # Xf(cm) - distance from the minor axis to the focus
+Yf = 13.55	                    # Yf(cm) - distance from the equatorial plane to the focus (here Yf=sqrt(8^2-4.6^2)+7)
+kap0 = -62.0                    # kap0(deg) - beam axis elevation angle (between Pointing vector and e_R ort)
+dkap = 3.0	                    # dkap(deg) - angular half-width of the beam
+beam_polarization = 'Etor'	    # CHARACTER beam polarization (Epol or Etor)
+beam_divergence   = 'diverg'	# CHARACTER beam divergence (converg or diverg)
+
+
+[temper]
+hot_plasma_model = true       # .T.	logical - Hot plasma model
+Te0 = 0.5	                  # Te0(keV) - electron temperature at the axis    (rho = 0)
+Tel = 0.022	                  # Tel(keV) - electron temperature at the limiter (rho = al = a0-sol)
+pTe1 = 2.0	                  # pTe1 | powers determining Te profile at 0 <= rho <= al:
+pTe2 = 1.0	                  # pTe2 | Te=(Te0-Tel)*(1-(rho/al)^pTe1)^pTe2+Tel
+lTe = 1.0	                  # lTe (cm) - Te decay length at al < rho <= a0: Te=Tel*exp((al-rho)/lTe)
+Ti0 = 0.001	                  # Ti0(keV) - ion temperature at the axis    (rho = 0)
+Til = 0.001	                  # Til(keV) - ion temperature at the limiter (rho = al = a0-sol)
+pTi1 = 2.0	                  # pTi1 | powers determining Ti profile at 0 <= rho <= al:
+pTi2 = 1.0	                  # pTi2 | Ti=(Ti0-Til)*(1-(rho/al)^pTi1)^pTi2+Til
+lTi = 1.0	                  # lTi (cm) - Ti decay length at al < rho <= a0: Ti=Til*exp((al-rho)/lTi)
+VRmin = 0.001	              # VRmin - minimum value of kll*vt/o0 = vt/vph||
+Landau_damping = true         # .T.	logical - account for Landau damping
+ECR_damping = false           # .F.	logical - account for ECR damping
+ICR_damping = false           # .F.	logical - account for ICR damping
+Transit_Time_damping = false  # .F.	logical - account for Transit Time damping
+Mixed_Terms_damping = false   # .F.	logical - account for Mixed Terms damping
+
+[kngrid]
+Nymax = 50.0	        # Nymax
+Nzmax = 50.0	        # Nzmax
+kymax2D = 1000	        # kymax
+kzmax2D = 2000	        # kzmax
+accuracy = 0.002	    # accuracy of the solution
+XSaveType = 0	        # Xsave type (save at: 0 - no save, 1 - arbitrary x, 2 - xuhr, <=-1 - x mesh)
+Xcut = 0.0    # Xsave position (cm) (required only if Xsave type = 1)
+
+[w2beam]
+Ro = 4.0	    # Ro(cm) - R-coordinate of the beam ref. system origin
+Yo = 0.0	    # Yo(cm) - Y-coordinate of the beam ref. system origin
+phigbo = 0.0	# phigbo(deg) - phi coordinate of the beam ref. system origin
+kap = 0.0		# kap(deg) - beam elevation angle
+chi = 0.0		# chi(deg) - rotation angle in the horizontal plane
+Wgby = 1.5		# Wgby(cm) - beam vertical radius by the e-fold level
+Wgbz = 1.5		# Wgbz(cm) - beam horizontal radius by the e-fold level
+ilbf = 1	# INTEGER polarization type (from file - 0, WKB solution - 1 or 2)
+Cgby = "(1.0, 0.0)"	    # Cgby(a.u.) - COMPLEX "vertical" field component of the beam (+ counter tet)
+Cgbz = "(0.0, 0.0)"	    # Cgbz(a.u.) - COMPLEX "horizontal" field component of the beam (+ along phi)
+
+[xzones]
+DivAlg = 0	    # zone division algorithm (0 - Nzone=1, 1 - manual, 2 - automatic near xuhr)
+
+# manual division
+# Nzone  = 2	    # Nzone - number of zones
+# Xlay   = [1.0]	# Xlay(2:Nzone) (cm) -  x-coordinates of boundaries between zones
+# pdlay  = [1, 2]	# pdlay(1:Nzone) - relative x-mesh densities in each zone
+
+# automatic division near xuhr points
+# Nstep = 0
+# Wstep  = []
+# pdstep = []
+
+[w2wall]
+GrillType = 1   # integer GrillType (1 - E-grill; 2 - H-grill)
+Nwgpol = 1	    # integer number of waveguides in poloidal direction
+tetwg  = 0.0    # waveguide center poloidal positions (theta, degrees)
+dtetwg = 120.0	# waveguide openings poloidal heights (theta, degrees)
+Amppol = 1.0	# amplitudes of waves in waveguides
+phspol = 0.0	# phases of waves in waveguides (degrees)
+Nwgtor = 8	    # integer number of waveguides in toroidal direction
+phiwg  = [-7.0, -5.0, -3.0, -1.0, 1.0, 3.0, 5.0, 7.0]   # waveguide center toroidal positions (phi, degrees)
+dphiwg = [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]	# waveguide openings toroidal widths  (phi, degrees)
+Amptor = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]	# amplitudes of waves in waveguides
+phstor = [0.0, 90.0, 180.0, 270.0, 0.0, 90.0, 180.0, 270.0 ]	# phases of waves in waveguides (degrees)
+
+
+[magn]
+Bvac0 = 22.0	    # Bvac0(kGs) - vacuum toroidal magnetic field at R=R0 (+ along phi)
+Nipnt = 201	        # Nipnt - Number of data points with Ipn values to be fitted
+BpDet = "CURR"	    # BpDet - CURR: jp(r)->Bpol(r) or NONE: Bpol=Ip=0
+
+clabel = ":CURR"    # label for options
+Ipl = 20.0	        # Ip(kA) - toroidal plasma current (+ along phi)
+rjl = 0.0	        # rjl=jpl/jp0 (jpl=jp(al), jp0=jp(0) - limiter and axis current densities)
+pjp1 = 2.0	        # pjp1 | powers determining jp(rho) profile at 0 <= rho <= al:
+pjp2 = 1.5	        # pjp2 | jp=(jp0-jpl)*(1-(rho/al)^pjp1)^pjp2+jpl
+ljp1 = 1.0	        # ljp(cm) - jp(rho) decay length at al < rho <= a0: jp=jpl*exp((al-rho)/ljp)
+
+[dens]
+DensProfType = "PARAB"	# density profile type (PARAB or GAUSS or SPLIN)
+de0 = 20.0	        # ne0(10^12 cm^-3) - density at the axis    (rho = 0)
+del = 0.765	        # nel(10^12 cm^-3) - density at the limiter (rho = al = a0-sol)
+pde1 = 2.0	        # pne1 | powers determining ne(rho) profile at 0 <= rho <= al:
+pde2 = 1.0	        # pne2 | ne=(ne0-nel)*(1-(rho/al)^pne1)^pne2+nel
+lde1 = 1.0	        # lne(cm) - ne(rho) decay length at al < rho <= a0: ne=nel*exp((al-rho)/lne)
+de0flc  = 0.0	    # density fluctuations max amplitude (10^12 cm^-3)
+phiflc1 = 0.0	    # density fluctuations phase at central position (degree)
+lamflc1 = 1.0	    # density fluctuations wave length (cm)
+x0flc1 = 0.0	    # density fluctuations central position (cm) (measured from plasma boundary)
+dxflc1 = 1.0	    # density fluctuations region width (cm)
+
+[coll]
+CollModel = 2	    # integer CollModel (0 - None, 1 - Effective, 2 - Model Constant, 3 - Model Function)
+CRconst = 0.00001   # CRconst - model constant collision rate (this value is used only if CollModel >= 2)
+CollAtUHR = false	# boost collisions at UHR (this and following values are used only if CollModel == 3)
+CRuhr = 0.01	    # CRuhr - collision rate at UHR
+CWuhr = 0.05	    # CWuhr - UHR boost region relative width
+CollAtLHR = false   # boost collisions at LHR
+CRlhr = 0.01	    # CRlhr - collision rate at LHR
+CWlhr = 0.05	    # CWlhr - LHR boost region relative width
+CollAtECR = false   # boost collisions at ECR
+CRecr = 0.01	    # CRecr - collision rate at ECR
+CWecr = 0.05	    # CWecr - ECR boost region relative width
+CollAtICR = false   # boost collisions at ICR
+CRicr = 0.01	    # CRicr - collision rate at ICR(s)
+CWicr = 0.05	    # CWicr - ICR boost region relative width
+
+[ctrl]
+rho_start = 64.98   # 64.6 55.0	rho_start(cm) - starting position
+drho = +0.01	    # rho_step(cm)
+tet  = 0.0	        # tet(deg)
+lpol = 0.0	        # mp
+ltor = -1.0	        # nphi
+
+[damp]
+DampLayerPresent = false # logical - is damping layer present?
+kappa0 = 50.0	         # damping rate at the center of damping layer
+psi0dmp = 0.95	         # psi coordinate of damping layer central position
+psidmp_hwid = 0.05	     # damping layer half-width along psi
+psidmp_edge = 0.05	     # damping layer edge width along psi
+tet0dmp1 = 180.0	     # tet coordinate of damping layer central position (deg)
+tetdmp1_hwid = 150.0     # damping layer half-width along tet (deg) (0 for damping = const(tet))
+tetdmp1_edge = 15.0	     # damping layer edge width along tet (deg)
+
+[EDF_param]
+DistribFuncType = "Maxwell" # DistribFuncType (character, legal values: Maxwell, Mxw_TST, Mxw_CDi)
+GDF_DEBUG = false   #	GDF_DEBUG
+EDF_DEBUG = false   #	EDF_DEBUG
+EDF_psi0 = 0.65	    # EDF_psi0
+EDF_dpsi = 0.1	    # EDF_dpsi
+EDF_gradmin = 0.1	# EDF_gradmin   (0 <= EDF_gradmin <= 1; 0 - horizontal plateau, 1 - Maxwell EDF)
+EDF_FitMargin = 0.3	# EDF_FitMargin (0 <= EDF_FitMargin=dufit/duplat <= 1; 0 - no margins)
+EDF_Nmin = 4	    # EDF_Nmin (umax=Uc/EDF_Nmin)
+EDF_Nmax = 8	    # EDF_Nmax (umin=Uc/EDF_Nmax)
